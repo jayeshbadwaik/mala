@@ -1,0 +1,25 @@
+#!/bin/bash
+# Exit on Any Command Failing
+set -e
+set -o pipefail
+
+if [ "$#" -ne 1 ]; then
+  echo "Script requires 1 argument."
+  echo "1. Toolchain Path"
+  exit 1
+fi
+
+
+
+mkdir -p ../clang-tidy && pushd ../clang-tidy
+cmake \
+  -DBUILD_TESTING=On \
+  -DCMAKE_BUILD_TYPE=Debug \
+  -DCMAKE_EXPORT_COMPILE_COMMANDS=On \
+  -DCMAKE_INSTALL_PREFIX=../run \
+  -DCMAKE_TOOLCHAIN_FILE=$1 \
+  ../code
+popd
+cp ../clang-tidy/compile_commands.json .
+/opt/jaystack/compiler/llvm-8.0/share/clang/run-clang-tidy.py -quiet -j 2
+

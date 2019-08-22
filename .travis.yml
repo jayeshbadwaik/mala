@@ -1,0 +1,30 @@
+sudo: required
+language: generic
+services:
+  - docker
+
+branches:
+  only:
+    - master
+    - develop
+    - staging
+
+env:
+  - PLATFORM=llvm-8.0.0
+  - PLATFORM=llvm-8.0.1
+  - PLATFORM=llvm-9.0.0
+
+before_script :
+  - docker pull jayeshbadwaik/maladocker
+
+script:
+  - PROJECT_NAME=mala
+  - CONTAINER_IMAGE=jayeshbadwaik/${PROJECT_NAME}docker
+  - CONTAINER=${PROJECT_NAME}-$PLATFORM
+  - SRC=$PWD
+  - docker run --cap-add=SYS_PTRACE -t -d --name ${CONTAINER} ${CONTAINER_IMAGE} bash
+  - docker exec ${CONTAINER} /bin/bash -c "mkdir -p /tmp/${PROJECT_NAME}"
+  - docker cp $SRC/. ${CONTAINER}:/tmp/${PROJECT_NAME}/src
+  - docker exec ${CONTAINER} /bin/bash -c "cd /tmp/${PROJECT_NAME}/src && utils/citools/linux/ci ${PLATFORM}"
+  - docker stop ${CONTAINER}
+  - docker rm ${CONTAINER}

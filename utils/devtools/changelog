@@ -1,0 +1,14 @@
+#!/bin/bash
+if [ "$#" -ne 1 ]; then
+	echo "Script requires an argument for the new version number."
+	exit 1
+fi
+VERSION=$1
+LAST_TAG=$(git describe --abbrev=0)
+echo "" | cat - changelog.md > temp && mv temp changelog.md
+echo "" | cat - changelog.md > temp && mv temp changelog.md
+git log $LAST_TAG...develop --pretty=format:'- [\[%h\]](http://github.com/nagzira/zell/commit/%H)  %s' --reverse  | cat - changelog.md > temp && mv temp changelog.md
+echo "" | cat - changelog.md > temp && mv temp changelog.md
+echo $(date -u +"%Y-%m-%d %T UTC") | cat - changelog.md > temp && mv temp changelog.md
+echo "" | cat - changelog.md > temp && mv temp changelog.md
+echo "# $VERSION" | cat - changelog.md > temp && mv temp changelog.md
