@@ -100,7 +100,7 @@ bool operator==(iterator<T> const& it, sentinel) noexcept
 template <typename T>
 bool operator!=(iterator<T> const& it, sentinel s) noexcept
 {
-  return (it != s);
+  return !(it == s);
 }
 
 template <typename T>
