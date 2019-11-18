@@ -2,6 +2,6 @@
 # Exit on Any Command Failing
 set -e
 set -o pipefail
-utils/citools/linux/local_ci llvm-7
-utils/citools/linux/local_ci llvm-8
-utils/citools/linux/local_ci llvm-master
+utils/citools/linux/local_ci llvm-8.0.0
+utils/citools/linux/local_ci llvm-8.0.1
+utils/citools/linux/local_ci llvm-9.0.0

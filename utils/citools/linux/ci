@@ -9,13 +9,11 @@ set -o pipefail
 # Defining CI Build and Test Function
 run_ci(){
   SRC_DIR=$1
-  TOOLCHAIN_FILE=/opt/vcpkg/${PROJECT_NAME}/${PLATFORM}/scripts/buildsystems/vcpkg.cmake
-  CHAINLOAD_FILE=/opt/jaystack/compiler/${PLATFORM}/etc/compiler.cmake
+  TOOLCHAIN_FILE=/opt/vcpkg/${PROJECT_NAME}/${PLATFORM}/toolchain.cmake
   BUILD_TYPE=$2
   cmake \
     -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
     -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_FILE \
-    -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=$CHAINLOAD_FILE \
     -DBUILD_TESTING=On \
     -DBUILD_DOC=Off \
     -DJAYSTACK_ENABLE_UBSAN=On \
