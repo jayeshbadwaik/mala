@@ -4,3 +4,4 @@ target_link_libraries(unit.t PUBLIC ${TESTLIBNAME})
 
 
 target_sources(unit.t PRIVATE coroutine_hello_world.t.cpp)
+target_sources(unit.t PRIVATE generator.t.cpp)
