@@ -26,3 +26,38 @@ TEST_CASE("generator: test02: arithmetic type by copy", "[generator]")
   ++iter;
   REQUIRE(iter == std::end(generator));
 }
+
+TEST_CASE("generator: test02: arithmetic type by reference", "[generator]")
+{
+  auto f = [](float& value) -> mala::generator<float&> { co_yield value; };
+
+  float value = 1.0f;
+  for (auto& x : f(value)) {
+    REQUIRE(&x == &value);
+    x += 1.0f;
+  }
+
+  REQUIRE(value == 2.0f);
+}
+
+TEST_CASE("generator of const type")
+{
+  auto fib = []() -> mala::generator<const std::uint64_t> {
+    std::uint64_t a = 0, b = 1;
+    while (true) {
+      co_yield b;
+      b += std::exchange(a, b);
+    }
+  };
+
+  std::uint64_t count = 0;
+  for (auto i : fib()) {
+    if (i > 1'000'000) {
+      break;
+    }
+    ++count;
+  }
+
+  // 30th fib number is 832'040
+  REQUIRE(count == 30);
+}
